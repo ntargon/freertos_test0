@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.20)
 project(freertos_test0)
 
+# FreeRTOS
 
 add_library(freertos_config INTERFACE)
 
@@ -27,5 +28,15 @@ set( FREERTOS_HEAP "4" CACHE STRING "" FORCE)
 set( FREERTOS_PORT "GCC_POSIX" CACHE STRING "" FORCE)
 FetchContent_MakeAvailable(freertos_kernel)
 
-add_executable(freertos_test0 src/main.cpp)
-target_link_libraries(freertos_test0 freertos_kernel freertos_config)
+# Application
+
+add_subdirectory(src/TaskA)
+add_subdirectory(src/TaskB)
+
+add_library(ApplicationEntry src/ApplicationEntry.c)
+target_link_libraries(ApplicationEntry PUBLIC TaskA TaskB)
+
+add_executable(freertos_test0 src/main.c)
+target_link_libraries(freertos_test0
+                      ApplicationEntry)
+                      # TaskA TaskB)
