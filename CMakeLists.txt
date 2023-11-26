@@ -25,7 +25,9 @@ FetchContent_Declare( freertos_kernel
 )
 
 set( FREERTOS_HEAP "4" CACHE STRING "" FORCE)
-set( FREERTOS_PORT "GCC_POSIX" CACHE STRING "" FORCE)
+if (MSVC)
+  set( FREERTOS_PORT "MSVC_MINGW" CACHE STRING "" FORCE)
+endif()
 FetchContent_MakeAvailable(freertos_kernel)
 
 # Application
